@@ -1,9 +1,9 @@
 
-public class HashTableUser {
+public class User {
 	//TODO: appropriate data structure for implementing hash table.
 	//Note that user's hash table is modifiable.
 	
-	public HashTableUser() {
+	public User() {
 		// TODO
 	}
 	

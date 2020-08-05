@@ -58,15 +58,13 @@ public class HashTable <T> {
     public boolean contains(T val) { // Checks if element is in table
         LinkedList<T> lst = table.get(Math.abs(val.hashCode()) % table.size());
         if (lst != null) {
-            if (lst.contains(val)) {
-                return true;
-            }
+            return lst.contains(val);
         }
         return false;
     }
 
     public double getLoad() { // Load getter
-        int c = 0;
+        double c = 0;
         for (LinkedList<T> lst : table) {
             c++; // haha get the joke? it's C++
         }
