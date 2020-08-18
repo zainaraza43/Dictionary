@@ -1,4 +1,3 @@
-
 public class HashTableInternal {
 	//TODO: appropriate data structure for hash table.
 	

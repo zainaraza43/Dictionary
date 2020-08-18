@@ -11,139 +11,88 @@ setLoad - sets the load as a percent
 toArray - returns an ArrayList of objects with no nulls in it.
  */
 
-import java.util.*;
+public class HashTable {
 
-public class HashTable <T> {
+    private HashNode[] table;
+    private int size;
 
-    private ArrayList<LinkedList<T>>table; // Hash Table
-    private int cSize;
-    private double maxLoad = 0.7; // The max load is supposed to be 70%
-
-    public HashTable() { // Constructor
-        cSize = 0;
-        clear(10);
+    public HashTable(int tableSize) {
+        table = new HashNode[tableSize*2];
+        size = 0;
     }
 
-    private void clear(int n) { // Sets up empty Hash Table
-        table = new ArrayList<LinkedList<T>>();
-        for (int i = 0; i < n; i++) {
-            table.add(null);
-        }
+    public boolean isEmpty() {
+        return size == 0;
     }
 
-    public void add(T val) { // Adds an element
-        int pos = Math.abs(val.hashCode() % table.size()); // Position of element
-        LinkedList<T> lst = table.get(pos); // The linked list at pos
-        if (lst == null) {
-            lst = new LinkedList<T>();
-            table.set(pos,lst);
-        }
-        lst.add(val);
-        cSize++;
-        if ((double)cSize / table.size() >= maxLoad) {
-            resize();
-        }
+    public int getSize() {
+        return size;
     }
 
-    public void remove(T val) { // Removes an element
-        LinkedList<T> lst = table.get(Math.abs(val.hashCode()) % table.size());
-        if (lst != null) {
-            lst.remove(val); // Uses the LinkedList remove
-            if (lst.size()==0) {
-                lst = null;
+    public void Clear() {
+        int len = table.length;
+        table = new HashNode[len];
+        size = 0;
+    }
+
+    public int Hash(String key) {
+        int hVal = key.hashCode();
+        return hVal % table.length;
+    }
+
+    public void Insert(String key, String value) {
+
+        // Locating correct index number in array
+        size++;
+        int index = Hash(key);
+        HashNode temp = new HashNode(key,value);
+
+        if (table[index] != null) {
+            temp.next = table[index];
+        }
+        table[index] = temp;
+
+    }
+
+    public void Remove(String key, String value) {
+        int index = Hash(key);
+        HashNode start = table[index];
+        HashNode end = start;
+
+        if (start.value.equals(value)) {
+            size--;
+            table[index] = start.next;
+            return;
+        }
+        while (end.next != null && !(end.next.value.equals(value))) {
+            end = end.next;
+        }
+        if (end.next == null) {
+            System.out.println("Couldn't find the element!");
+            return;
+        }
+        size--;
+        if (end.next.next == null) {
+            end.next = null;
+            return;
+        }
+        end.next = end.next.next;
+        table[index] = start;
+    }
+
+    public void Display() {
+        System.out.println();
+        for (int i = 0; i < table.length; i++)
+        {
+            System.out.print ("Index " + i + ":  ");
+            HashNode start = table[i];
+            while(start != null)
+            {
+                System.out.print("("+start.key +", "+start.value+") ");
+                start = start.next;
             }
+            System.out.println();
         }
     }
 
-    public boolean contains(T val) { // Checks if element is in table
-        LinkedList<T> lst = table.get(Math.abs(val.hashCode()) % table.size());
-        if (lst != null) {
-            return lst.contains(val);
-        }
-        return false;
-    }
-
-    public double getLoad() { // Load getter
-        double c = 0;
-        for (LinkedList<T> lst : table) {
-            c++; // haha get the joke? it's C++
-        }
-        return c/table.size();
-    }
-
-    public void setMaxLoad(double percent) { // Sets max load
-        if ( 0.1 <= percent && percent <= 0.8) {
-            maxLoad = percent;
-        }
-    }
-
-    public void setLoad(double percent) { // Sets load provided less than max load
-        if (percent >= 0.1 && percent <= 0.8){
-            if (percent > maxLoad){
-                return;
-            }
-            else{
-                resize(percent); // Calls helper method to resize
-            }
-        }
-    }
-
-    public void resize() { // Resizes the hash table
-        ArrayList<LinkedList<T>>tmp = table;
-        cSize = 0;
-        clear(table.size()*10);
-        for (LinkedList<T>lst : tmp) {
-            if (lst != null) {
-                for (T val:lst) {
-                    add(val);
-                }
-            }
-        }
-    }
-
-    public void resize(double load) { // Helper method for setLoad() that resizes given the load value
-        ArrayList<LinkedList<T>>tmp = table;
-        cSize = 0;
-        int n = (int)(cSize/load);
-        clear(n);
-        for (LinkedList<T>lst : tmp) {
-            if (lst != null) {
-                for (T val:lst) {
-                    add(val);
-                }
-            }
-        }
-    }
-
-    @Override
-    public String toString() {
-        String ans = "";
-        for (LinkedList<T>lst : table) {
-            if (lst != null) {
-                for (T val : lst) {
-                    ans += ", "+val;
-                }
-            }
-        }
-        if (ans != "") {
-            ans = ans.substring(2);
-        }
-        return "<" + ans + ">";
-    }
-
-    public ArrayList<T> toArray() { // Converts HashTable to ArrayList
-        ArrayList<T> hashlist = new ArrayList<T>();
-        for (LinkedList<T> lst : table){
-            if (lst!= null){
-                for (T val : lst){
-                    hashlist.add(val);
-                }
-            }
-        }
-        return hashlist;
-    }
 }
-/*
-Hash Tables are awesome because they have O(1) add/delete/access times.
-No predictable order.
- */
