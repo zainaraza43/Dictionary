@@ -17,7 +17,7 @@ public class HashTable {
     private int size;
 
     public HashTable(int tableSize) {
-        table = new HashNode[tableSize*2];
+        table = new HashNode[tableSize];
         size = 0;
     }
 
