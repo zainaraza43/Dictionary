@@ -37,7 +37,7 @@ public class HashTable {
 
     public int Hash(String key) {
         int hVal = key.hashCode();
-        return hVal % table.length;
+        return Math.abs(hVal % table.length);
     }
 
     public void Insert(String key, String value) {
@@ -46,7 +46,7 @@ public class HashTable {
         size++;
         int index = Hash(key);
         HashNode temp = new HashNode(key,value);
-
+        System.out.println("Inserting: ("+key+", "+value+")"+" @ index #"+index);
         if (table[index] != null) {
             temp.next = table[index];
         }
