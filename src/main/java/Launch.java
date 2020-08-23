@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Launch {
@@ -78,7 +79,46 @@ public class Launch {
 			}
 		}
 
-		Dictionary.Display();
 		reader.close();
+
+		// Menu
+		Scanner kb = new Scanner(System.in);
+		int choice;
+		String word;
+		do {
+			System.out.println("----------Dictionary Menu----------");
+			System.out.println("0 - Exit");
+			System.out.println("1 - Word Lookup");
+			System.out.println("2 - Add an entry");
+			System.out.println("3 - Remove an entry");
+			System.out.println("4 - Edit an entry");
+			System.out.println("-----------------------------------");
+			System.out.println("Enter your choice:");
+
+			try {
+				choice = Integer.parseInt(kb.nextLine());
+			} catch(NumberFormatException e) {
+				System.out.println("Incorrect input! Try again.");
+				choice = 5;
+			}
+
+			switch (choice) {
+				case 1:
+					System.out.println("Enter a word to look up.");
+					word = kb.nextLine();
+					Dictionary.Lookup(word);
+					break;
+				case 2:
+					System.out.println("Enter a word and entry to add.");
+					break;
+				case 3:
+					System.out.println("Enter a word to remove.");
+					break;
+				case 4:
+					System.out.println("Enter a word to edit.");
+			}
+
+		} while(choice != 0);
+
 	}
 }

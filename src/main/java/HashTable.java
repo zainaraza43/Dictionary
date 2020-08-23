@@ -46,7 +46,7 @@ public class HashTable {
         size++;
         int index = Hash(key);
         HashNode temp = new HashNode(key,value);
-        System.out.println("Inserting: ("+key+", "+value+")"+" @ index #"+index);
+        //System.out.println("Inserting: ("+key+", "+value+")"+" @ index #"+index);
         if (table[index] != null) {
             temp.next = table[index];
         }
@@ -78,6 +78,24 @@ public class HashTable {
         }
         end.next = end.next.next;
         table[index] = start;
+    }
+
+    public void Lookup(String key) {
+        key = Character.toString(key.charAt(0)).toUpperCase() + key.substring(1).toLowerCase() + " ";
+        int index = Hash(key), pos = 0;
+        HashNode start = table[index];
+
+        if (start == null) {
+            System.out.println("No entries found for: "+key+"!");
+            return;
+        }
+
+        System.out.println("Lookup for "+key+":");
+        while (start != null) {
+            pos++;
+            System.out.println(pos+"."+start.value);
+            start = start.next;
+        }
     }
 
     public void Display() {
