@@ -1,14 +1,13 @@
 import java.io.File;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Launch {
 
 	public static boolean EmptyLine(String line) {
 		return line.length() <= 1;
-	}
+	} // Returns true if the line read is empty
 
-	public static String getName(String line) {
+	public static String getName(String line) { // Gets the name from the line read
 		line = line.substring(0,line.indexOf('.'));
 		try {
 			line = line.substring(0,line.lastIndexOf(" "));
@@ -19,7 +18,7 @@ public class Launch {
 		return line;
 	}
 
-	public static int NumDefs(String line) {
+	public static int NumDefs(String line) { // Returns the number of definitions for one word
 		int num = 0, n = 0;
 		for (int i = 0; i < line.length(); i++) {
 			char c = line.charAt(i);
@@ -34,7 +33,7 @@ public class Launch {
 		return Math.max(n, 1);
 	}
 
-	public static int getNextNumberIndex(String line, int pos) {
+	public static int getNextNumberIndex(String line, int pos) { // Gets the index of each number in the line
 		for (int i = pos; i < line.length(); i++) {
 			try {
 				int num = Integer.parseInt(String.valueOf(line.charAt(i)));
@@ -47,7 +46,7 @@ public class Launch {
 		return line.length() - 1;
 	}
 
-	public static String getDef(int t, String line) {
+	public static String getDef(int t, String line) { // Returns the definiton of each word
 		if (NumDefs(line) == 1) {
 			try {
 				line = line.substring(line.indexOf('.')+1,line.indexOf('['));
@@ -65,23 +64,24 @@ public class Launch {
 
 	public static void main(String[] args) throws Exception {
 
-		HashTable Dictionary = new HashTable(72320);
+		HashTable Dictionary = new HashTable(72320); // The HashTable named Dictionary
 
-		File dic = new File("dic.txt");
-		Scanner reader = new Scanner(dic);
+		File dic = new File("dic.txt"); // The file with the dictionary in it
+		Scanner reader = new Scanner(dic); // To read the dictionary
 
-		while (reader.hasNextLine()) {
+		while (reader.hasNextLine()) { // Goes through whole file
 			String data = reader.nextLine();
-			if (!EmptyLine(data)) {
+			if (!EmptyLine(data)) { // If the list isn't empty
 				for (int i = 1; i < NumDefs(data); i++) {
-					Dictionary.Insert(getName(data),getDef(i,data));
+					Dictionary.Insert(getName(data),getDef(i,data)); // Inserts a word and definition
 				}
 			}
 		}
 
-		reader.close();
+		reader.close(); // Closes the reader
 
 		// Menu
+		System.out.println("Successfully loaded Dictionary with "+Dictionary.getSize()+" entries!"); // Number of definitions
 		Scanner kb = new Scanner(System.in);
 		int choice;
 		String word, definition, newDef;
@@ -96,7 +96,7 @@ public class Launch {
 			System.out.println("Enter your choice:");
 
 			try {
-				choice = Integer.parseInt(kb.nextLine());
+				choice = Integer.parseInt(kb.nextLine()); // Choice in the menu
 			} catch(NumberFormatException e) {
 				System.out.println("Incorrect input! Try again.");
 				choice = 5;
