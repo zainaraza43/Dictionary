@@ -54,7 +54,45 @@ public class HashTable {
 
     }
 
+    public boolean doesExist(String key) {
+        key = Character.toString(key.charAt(0)).toUpperCase() + key.substring(1).toLowerCase() + " ";
+        int index = Hash(key);
+        HashNode temp = table[index];
+        return temp != null;
+    }
+
+    public String IndexDefinition(String key, int ind) {
+        key = Character.toString(key.charAt(0)).toUpperCase() + key.substring(1).toLowerCase() + " ";
+        int index = Hash(key);
+        HashNode start = table[index];
+        String temp = start.value;
+        int pos = 1;
+        while (start != null) {
+            pos++;
+            if (ind == pos) {
+                return start.value;
+            }
+            start = start.next;
+        }
+        return temp;
+    }
+
+    public void Edit(String key, String value, String newValue) {
+        key = Character.toString(key.charAt(0)).toUpperCase() + key.substring(1).toLowerCase() + " ";
+        int index = Hash(key);
+        HashNode start = table[index];
+
+        while (start != null) {
+            if (start.value.equals(value)) {
+                start.setValue(newValue);
+            }
+            start = start.next;
+        }
+
+    }
+
     public void Remove(String key, String value) {
+        key = Character.toString(key.charAt(0)).toUpperCase() + key.substring(1).toLowerCase() + " ";
         int index = Hash(key);
         HashNode start = table[index];
         HashNode end = start;
@@ -78,6 +116,7 @@ public class HashTable {
         }
         end.next = end.next.next;
         table[index] = start;
+
     }
 
     public void Lookup(String key) {

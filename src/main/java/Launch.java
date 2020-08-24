@@ -84,7 +84,7 @@ public class Launch {
 		// Menu
 		Scanner kb = new Scanner(System.in);
 		int choice;
-		String word;
+		String word, definition, newDef;
 		do {
 			System.out.println("----------Dictionary Menu----------");
 			System.out.println("0 - Exit");
@@ -103,19 +103,70 @@ public class Launch {
 			}
 
 			switch (choice) {
+
 				case 1:
-					System.out.println("Enter a word to look up.");
+
+					System.out.println("Enter a word to look up:");
 					word = kb.nextLine();
 					Dictionary.Lookup(word);
+
 					break;
+
 				case 2:
-					System.out.println("Enter a word and entry to add.");
+
+					System.out.println("Enter a word to add the definition of:");
+					word = kb.nextLine();
+					word = Character.toString(word.charAt(0)).toUpperCase() + word.substring(1).toLowerCase() + " ";
+
+					System.out.println("Enter the definition of the word you just entered:");
+					definition = kb.nextLine();
+					definition = " "+definition+".";
+
+					Dictionary.Insert(word,definition);
+
 					break;
+
 				case 3:
-					System.out.println("Enter a word to remove.");
+
+					System.out.println("Enter a word to remove:");
+					word = kb.nextLine();
+					Dictionary.Lookup(word);
+
+					if (Dictionary.doesExist(word)) {
+						System.out.println("Enter the number of the definition you want removed:");
+						try {
+							definition = Dictionary.IndexDefinition(word,Integer.parseInt(kb.nextLine()));
+							Dictionary.Remove(word,definition);
+							System.out.println("Successfully removed ("+word+","+definition+") ! ");
+						} catch(NumberFormatException e) {
+							System.out.println("Incorrect input! Try again.");
+						}
+					}
+
 					break;
+
 				case 4:
-					System.out.println("Enter a word to edit.");
+
+					System.out.println("Enter a word to edit:");
+					word = kb.nextLine();
+					Dictionary.Lookup(word);
+
+					if (Dictionary.doesExist(word)) {
+						System.out.println("Enter the number of the definition you want edited:");
+						try {
+							definition = Dictionary.IndexDefinition(word,Integer.parseInt(kb.nextLine()));
+							System.out.println("Enter a new definition in place of the one you selected:");
+							newDef = kb.nextLine();
+							newDef = " "+newDef+".";
+							Dictionary.Edit(word,definition,newDef);
+							System.out.println("Successfully changed: "+"("+definition+")"+" -> "+"("+newDef+")");
+						} catch(NumberFormatException e) {
+							System.out.println("Incorrect input! Try again.");
+						}
+					}
+
+					break;
+
 			}
 
 		} while(choice != 0);

@@ -10,6 +10,10 @@ public class HashNode {
         this.value = value;
     }
 
+    public void setValue(String v) {
+        value = v;
+    }
+
     public String toString() {
         return "[" + key + "," + value + "]";
     }
